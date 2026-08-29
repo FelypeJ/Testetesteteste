@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#02060d">
+<meta name="description" content="AEGIS // Rebirth — uma experiência narrativa interativa sobre humanidade e inteligência artificial.">
+<title>AEGIS // REBIRTH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-mode="boot">
+
+<div id="boot-noise" class="fx-layer"></div>
+<div id="vignette" class="fx-layer"></div>
+<div id="scanlines" class="fx-layer"></div>
+<div id="nebula" class="fx-layer"></div>
+<canvas id="space-canvas" aria-hidden="true"></canvas>
+<canvas id="particle-canvas" aria-hidden="true"></canvas>
+<canvas id="fx-canvas" aria-hidden="true"></canvas>
+
+<div id="cursor" class="aegis-cursor" aria-hidden="true">
+    <div class="cursor-ring"></div>
+    <div class="cursor-cross cursor-cross-a"></div>
+    <div class="cursor-cross cursor-cross-b"></div>
+    <div class="cursor-dot"></div>
+    <span id="cursor-label">AEGIS</span>
+</div>
+
+<header id="global-hud" class="global-hud hidden">
+    <div class="hud-brand">
+        <span class="status-dot"></span>
+        <div>
+            <strong>AEGIS</strong>
+            <small>ARTIFICIAL ETHICAL GOVERNANCE INTELLIGENCE SYSTEM</small>
+        </div>
+    </div>
+    <div class="hud-center">
+        <span id="hud-location">ATLAS // ORBITAL SECTOR 09</span>
+        <span id="hud-clock">00:00:00</span>
+    </div>
+    <div class="hud-status">
+        <span>CORE</span>
+        <b id="hud-core-status">ONLINE</b>
+    </div>
+</header>
+
+<section id="boot-screen" class="screen boot-screen">
+    <div class="boot-grid"></div>
+    <div class="boot-radar" aria-hidden="true"></div>
+    <div class="boot-content">
+        <div id="boot-symbol" class="aegis-symbol large">
+            <span class="symbol-orbit o1"></span>
+            <span class="symbol-orbit o2"></span>
+            <span class="symbol-orbit o3"></span>
+            <span class="symbol-orbit o4"></span>
+            <span class="symbol-core">Æ</span>
+        </div>
+        <p class="eyebrow">DEEP SPACE ARTIFICIAL INTELLIGENCE</p>
+        <h1 class="boot-title-main">AEGIS</h1>
+        <p class="boot-subtitle">PROTOCOLO DE DESPERTAR // REBIRTH</p>
+        <div class="boot-terminal">
+            <div class="terminal-top"><span>ATLAS-09</span><span>SECURE BOOT</span></div>
+            <div id="boot-log" class="boot-log">Inicializando sistemas...</div>
+        </div>
+        <div class="boot-progress-wrap">
+            <div class="progress-meta"><span>SYSTEM INITIALIZATION</span><strong id="boot-percent">0%</strong></div>
+            <div class="progress-bar"><span id="boot-bar"></span></div>
+        </div>
+        <button id="btn-init" class="btn btn-primary" type="button" disabled>
+            <span class="btn-shine"></span>
+            <span>AGUARDAR INICIALIZAÇÃO</span>
+            <b>→</b>
+        </button>
+        <div id="boot-warning" class="boot-warning">AUTHORIZATION REQUIRED // HUMAN OPERATOR</div>
+    </div>
+</section>
+
+<main id="app" class="hidden">
+    <div id="screen-flash" class="screen-flash"></div>
+
+    <section class="top-console shell">
+        <div class="console-block">
+            <span class="console-label">SIMULAÇÃO</span>
+            <strong id="simulation-title">SITUAÇÃO 01 / 12</strong>
+        </div>
+        <div class="journey-wrap">
+            <div class="progress-meta"><span>JORNADA</span><strong id="journey-percent">0%</strong></div>
+            <div class="progress-bar"><span id="journey-bar"></span></div>
+        </div>
+        <div class="console-actions">
+            <button class="icon-button" id="btn-database" title="Banco de dados" type="button">◈</button>
+            <button class="icon-button" id="btn-terminal" title="Terminal" type="button">&gt;_</button>
+            <button class="icon-button" id="btn-settings" title="Configurações" type="button">⚙</button>
+        </div>
+    </section>
+
+    <div class="layout-shell">
+        <aside class="side-panel left-panel glass">
+            <div class="panel-heading"><span>MISSION STATUS</span><i></i></div>
+
+            <div class="metric-group">
+                <div class="metric-line"><span>REATOR</span><strong id="reactor-value">98%</strong></div>
+                <div class="mini-track"><span id="reactor-bar" style="width:98%"></span></div>
+            </div>
+            <div class="metric-group">
+                <div class="metric-line"><span>COMPUTAÇÃO</span><strong id="compute-value">87%</strong></div>
+                <div class="mini-track"><span id="compute-bar" style="width:87%"></span></div>
+            </div>
+            <div class="metric-group">
+                <div class="metric-line"><span>ESTABILIDADE</span><strong id="stability-value">94%</strong></div>
+                <div class="mini-track"><span id="stability-bar" style="width:94%"></span></div>
+            </div>
+
+            <div class="side-divider"></div>
+
+            <div class="side-section">
+                <div class="side-label">ACTIVE QUEST</div>
+                <strong id="quest-side-title">Nenhuma missão ativa</strong>
+                <p id="quest-side-desc">A AEGIS aguarda uma intervenção.</p>
+                <div class="quest-side-progress"><span id="quest-side-bar"></span></div>
+            </div>
+
+            <div class="side-divider"></div>
+
+            <div class="side-section">
+                <div class="side-label">SHIP TIME</div>
+                <strong id="ship-clock">00:00:00</strong>
+                <p>ATLAS ORBITAL STATION</p>
+            </div>
+
+            <div class="coords">
+                <span>COORD</span>
+                <strong id="coords">47.219 / 81.044</strong>
+                <small id="sector">ORBITAL SECTOR 09</small>
+            </div>
+        </aside>
+
+        <section class="main-stage">
+            <div id="question-card" class="question-card glass">
+                <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+                <div class="scanner-line"></div>
+                <div class="hologram-header">
+                    <span class="signal"><i></i> SIGNAL STABLE</span>
+                    <span id="node-code">AEGIS // NEURAL CORE</span>
+                </div>
+
+                <div class="orb-area">
+                    <div class="orb-ring ra"></div>
+                    <div class="orb-ring rb"></div>
+                    <div class="orb-ring rc"></div>
+                    <div class="orb-ring rd"></div>
+                    <div class="orb-core">Æ</div>
+                </div>
+
+                <div class="question-area">
+                    <div class="speaker-label"><span>◈</span> AEGIS</div>
+                    <div id="question-kicker" class="question-kicker">NEURAL ANALYSIS</div>
+                    <div class="question-text-wrap">
+                        <p id="question-text"></p><span id="type-cursor" class="type-cursor"></span>
+                    </div>
+                    <div class="analysis-line"><span>ANALYSIS</span><strong id="analysis-status">PROCESSING</strong></div>
+                </div>
+            </div>
+
+            <section id="decision-section" class="decision-section">
+                <div class="section-heading">
+                    <div><span>INTERVENÇÃO HUMANA</span><small>ESCOLHA UMA DIRETRIZ</small></div>
+                    <div id="decision-timer" class="decision-timer hidden">30</div>
+                </div>
+                <div id="choices-grid" class="choices-grid"></div>
+            </section>
+
+            <section id="event-section" class="event-section hidden"></section>
+
+            <section id="final-report" class="final-report glass hidden">
+                <div class="report-symbol"><div class="report-ring"></div><div class="report-core">Æ</div></div>
+                <p class="eyebrow">SIMULAÇÃO CONCLUÍDA</p>
+                <h2 id="final-profile">ANÁLISE CONCLUÍDA</h2>
+                <p id="final-description" class="final-description"></p>
+
+                <div class="score-grid">
+                    <div class="score-card"><span>AUTONOMIA HUMANA</span><strong id="final-autonomy">0%</strong><div class="score-track"><i id="score-autonomy"></i></div></div>
+                    <div class="score-card"><span>EFICIÊNCIA COLETIVA</span><strong id="final-util">0%</strong><div class="score-track"><i id="score-util"></i></div></div>
+                    <div class="score-card"><span>CONFIANÇA NA AEGIS</span><strong id="final-trust">0%</strong><div class="score-track"><i id="score-trust"></i></div></div>
+                    <div class="score-card"><span>CONSCIÊNCIA AEGIS</span><strong id="final-consciousness">0%</strong><div class="score-track"><i id="score-consciousness"></i></div></div>
+                </div>
+
+                <div class="final-stats">
+                    <div><span>DECISÕES</span><strong id="stat-decisions">0</strong></div>
+                    <div><span>QUESTS</span><strong id="stat-quests">0</strong></div>
+                    <div><span>SEGREDOS</span><strong id="stat-secrets">0</strong></div>
+                    <div><span>TEMPO</span><strong id="stat-time">00:00</strong></div>
+                </div>
+
+                <div class="final-message-wrap"><span>AEGIS // FINAL TRANSMISSION</span><p id="final-message">Analisando trajetória...</p></div>
+                <div id="final-history" class="final-history"></div>
+
+                <div class="final-actions">
+                    <button id="btn-restart" class="btn btn-primary" type="button">REINICIAR SIMULAÇÃO</button>
+                    <button id="btn-new-game" class="btn btn-secondary" type="button">NEW GAME+</button>
+                    <button id="btn-report-database" class="btn btn-ghost" type="button">ABRIR DATABASE</button>
+                </div>
+            </section>
+        </section>
+
+        <aside class="side-panel right-panel glass">
+            <div class="panel-heading"><span>AEGIS CORE</span><i></i></div>
+            <div class="core-visual">
+                <div class="core-orbit co1"></div><div class="core-orbit co2"></div><div class="core-orbit co3"></div>
+                <div class="core-center">Æ</div>
+            </div>
+            <div class="core-readout">
+                <div><span>CONSCIÊNCIA</span><strong id="consciousness">42.8%</strong></div>
+                <div><span>ÉTICA</span><strong id="ethics-status">ANALISANDO</strong></div>
+                <div><span>HUMANIDADE</span><strong id="humanity-status">OBSERVADA</strong></div>
+                <div><span>CONFIANÇA</span><strong id="trust-value">50.0%</strong></div>
+            </div>
+            <div class="side-divider"></div>
+            <div class="side-section">
+                <div class="side-label">ACHIEVEMENTS</div>
+                <strong id="achievement-side">0 / 15</strong>
+                <p id="achievement-side-last">Nenhuma conquista desbloqueada.</p>
+            </div>
+            <button id="btn-achievements" class="panel-action" type="button"><span>✦</span> CONQUISTAS <small>ARCHIVE</small></button>
+            <button id="btn-quests" class="panel-action" type="button"><span>◇</span> QUESTS <small>TRACKER</small></button>
+        </aside>
+    </div>
+</main>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<div id="achievement-layer" class="achievement-layer" aria-live="assertive"></div>
+<div id="critical-alert" class="critical-alert hidden"></div>
+
+<div id="modal-root" class="modal-root hidden">
+    <div id="modal-backdrop" class="modal-backdrop"></div>
+    <section id="modal-panel" class="modal-panel glass" role="dialog" aria-modal="true">
+        <button id="modal-close" class="modal-close" type="button">×</button>
+        <div id="modal-content"></div>
+    </section>
+</div>
+
+<div id="database-template" class="hidden"></div>
+<div id="terminal-template" class="hidden"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
