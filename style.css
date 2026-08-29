@@ -1,0 +1,1522 @@
+/* ============================================================
+   AEGIS 3.0
+   CINEMATIC NEURAL INTERFACE
+   ============================================================
+   DESIGN SYSTEM
+   ------------------------------------------------------------
+   01. RESET
+   02. VARIABLES
+   03. GLOBAL
+   04. CANVAS
+   05. ENVIRONMENT
+   06. HUD
+   07. CURSOR
+   08. BOOT
+   09. SYMBOL
+   10. MAIN INTERFACE
+   11. PANELS
+   12. CONSOLE
+   13. QUEST SYSTEM
+   14. QUESTION CARD
+   15. ORBS
+   16. TYPEWRITER
+   17. CHOICES
+   18. MINIGAMES
+   19. FINAL REPORT
+   20. SCORE SYSTEM
+   21. CORE
+   22. NOTIFICATIONS
+   23. ACHIEVEMENTS
+   24. MODALS
+   25. AUDIO
+   26. ANIMATIONS
+   27. RESPONSIVE
+   28. ACCESSIBILITY
+   ============================================================ */
+
+
+/* ============================================================
+   01. RESET
+============================================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ============================================================
+   02. VARIABLES
+============================================================ */
+
+:root {
+
+    --bg-0: #000106;
+    --bg-1: #01030a;
+    --bg-2: #020812;
+    --bg-3: #061624;
+
+    --cyan: #00eaff;
+    --cyan-light: #8df8ff;
+    --cyan-dark: #007f91;
+
+    --blue: #168fff;
+    --blue-dark: #064b9b;
+
+    --violet: #8d4dff;
+    --violet-dark: #482080;
+
+    --magenta: #ff28d7;
+
+    --green: #42ffaf;
+    --yellow: #ffe66d;
+    --red: #ff426d;
+
+    --white: #f2fdff;
+    --white-soft: #d7f6fa;
+
+    --muted: #72919b;
+    --muted-dark: #405d67;
+
+    --panel: rgba(4, 13, 23, .78);
+    --panel-heavy: rgba(2, 8, 16, .94);
+    --panel-light: rgba(11, 31, 46, .72);
+
+    --border: rgba(0, 234, 255, .45);
+    --border-soft: rgba(0, 234, 255, .18);
+
+    --shadow-cyan:
+        0 0 15px rgba(0, 234, 255, .22),
+        0 0 50px rgba(0, 130, 255, .08);
+
+    --shadow-violet:
+        0 0 15px rgba(141, 77, 255, .25),
+        0 0 50px rgba(141, 77, 255, .08);
+
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+
+    --ease-out: cubic-bezier(.16, 1, .3, 1);
+    --ease-smooth: cubic-bezier(.2, .8, .2, 1);
+
+}
+
+
+/* ============================================================
+   03. GLOBAL
+============================================================ */
+
+body {
+
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            #061624 0%,
+            #020812 38%,
+            #000106 100%
+        );
+
+    color: var(--white);
+
+    overflow-x: hidden;
+
+    font-family: var(--font-body);
+
+    cursor: none;
+
+    -webkit-font-smoothing: antialiased;
+
+}
+
+button,
+a {
+    cursor: none;
+}
+
+button {
+    font: inherit;
+}
+
+::selection {
+    color: #001014;
+    background: var(--cyan);
+}
+
+
+/* ============================================================
+   04. CANVAS
+============================================================ */
+
+#space-canvas,
+#particle-canvas,
+#star-canvas {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+}
+
+#space-canvas {
+    z-index: 0;
+}
+
+#star-canvas {
+    z-index: 1;
+}
+
+#particle-canvas {
+    z-index: 4;
+}
+
+
+/* ============================================================
+   05. ENVIRONMENT
+============================================================ */
+
+.nebula {
+
+    position: fixed;
+
+    inset: -30%;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at 20% 30%,
+            rgba(0, 160, 255, .12),
+            transparent 32%
+        ),
+        radial-gradient(
+            ellipse at 80% 70%,
+            rgba(125, 0, 255, .11),
+            transparent 34%
+        ),
+        radial-gradient(
+            ellipse at 50% 50%,
+            rgba(0, 234, 255, .04),
+            transparent 50%
+        );
+
+    filter: blur(55px);
+
+    animation:
+        nebulaMove 24s ease-in-out infinite alternate;
+
+}
+
+.vignette {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 10;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 38%,
+            rgba(0, 0, 0, .5) 100%
+        );
+
+}
+
+.scanlines {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 11;
+
+    pointer-events: none;
+
+    opacity: .065;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 3px,
+            rgba(255, 255, 255, .12) 4px
+        );
+
+    animation:
+        scanMove 8s linear infinite;
+
+}
+
+.noise {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 12;
+
+    pointer-events: none;
+
+    opacity: .025;
+
+    background-image:
+        repeating-radial-gradient(
+            circle at 0 0,
+            #fff 0,
+            transparent 1px,
+            transparent 3px
+        );
+
+}
+
+.crt-flicker {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 13;
+
+    pointer-events: none;
+
+    background:
+        rgba(255,255,255,.015);
+
+    animation:
+        crtFlicker .15s infinite;
+
+}
+
+
+/* ============================================================
+   06. HUD
+============================================================ */
+
+.hud {
+
+    position: fixed;
+
+    z-index: 50;
+
+    top: 25px;
+
+    left: 35px;
+    right: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    pointer-events: none;
+
+}
+
+.hud-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+.status-dot {
+
+    width: 8px;
+    height: 8px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--cyan);
+
+    box-shadow:
+        0 0 8px var(--cyan),
+        0 0 20px var(--cyan);
+
+    animation:
+        statusPulse 1.5s infinite;
+
+}
+
+.brand-text strong {
+
+    display: block;
+
+    font-family: var(--font-display);
+
+    color: var(--cyan);
+
+    letter-spacing: 4px;
+
+    font-size: 13px;
+
+}
+
+.brand-text small {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+
+}
+
+.hud-status {
+
+    border:
+        1px solid rgba(0, 234, 255, .25);
+
+    padding:
+        8px 13px;
+
+    background:
+        rgba(0, 20, 30, .5);
+
+    backdrop-filter: blur(8px);
+
+    font-family: var(--font-display);
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+}
+
+.hud-status span {
+
+    color: var(--muted);
+
+    margin-right: 10px;
+
+}
+
+.hud-status b {
+
+    color: var(--green);
+
+}
+
+
+/* ============================================================
+   HUD CORNERS
+============================================================ */
+
+.hud-corner {
+
+    position: fixed;
+
+    z-index: 49;
+
+    width: 55px;
+    height: 55px;
+
+    pointer-events: none;
+
+    opacity: .5;
+
+}
+
+.hud-corner-tl {
+
+    top: 15px;
+    left: 15px;
+
+    border-top:
+        1px solid var(--cyan);
+
+    border-left:
+        1px solid var(--cyan);
+
+}
+
+.hud-corner-tr {
+
+    top: 15px;
+    right: 15px;
+
+    border-top:
+        1px solid var(--cyan);
+
+    border-right:
+        1px solid var(--cyan);
+
+}
+
+.hud-corner-bl {
+
+    bottom: 15px;
+    left: 15px;
+
+    border-bottom:
+        1px solid var(--cyan);
+
+    border-left:
+        1px solid var(--cyan);
+
+}
+
+.hud-corner-br {
+
+    bottom: 15px;
+    right: 15px;
+
+    border-bottom:
+        1px solid var(--cyan);
+
+    border-right:
+        1px solid var(--cyan);
+
+}
+
+
+/* ============================================================
+   SYSTEM CLOCK
+============================================================ */
+
+.system-time {
+
+    position: fixed;
+
+    z-index: 45;
+
+    left: 35px;
+    bottom: 25px;
+
+    display: flex;
+
+    gap: 12px;
+
+    align-items: center;
+
+    font-family: var(--font-display);
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: var(--muted);
+
+}
+
+.system-time strong {
+    color: var(--cyan);
+}
+
+
+/* ============================================================
+   07. CURSOR
+============================================================ */
+
+#cursor {
+
+    position: fixed;
+
+    z-index: 999;
+
+    width: 22px;
+    height: 22px;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, -50%);
+
+}
+
+#cursor::before,
+#cursor::after {
+
+    content: '';
+
+    position: absolute;
+
+    background: var(--cyan);
+
+    box-shadow:
+        0 0 8px var(--cyan);
+
+}
+
+#cursor::before {
+
+    width: 100%;
+    height: 1px;
+
+    top: 50%;
+    left: 0;
+
+}
+
+#cursor::after {
+
+    width: 1px;
+    height: 100%;
+
+    left: 50%;
+    top: 0;
+
+}
+
+#cursor span {
+
+    position: absolute;
+
+    inset: 6px;
+
+    border:
+        1px solid var(--cyan);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 10px var(--cyan);
+
+    transition:
+        transform .2s,
+        background .2s;
+
+}
+
+#cursor.hover span {
+
+    transform: scale(1.8);
+
+    background:
+        rgba(0, 234, 255, .18);
+
+}
+
+#cursor-trail {
+
+    position: fixed;
+
+    z-index: 998;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    background: var(--cyan);
+
+    box-shadow:
+        0 0 10px var(--cyan);
+
+    opacity: .6;
+
+}
+
+
+/* ============================================================
+   08. BOOT
+============================================================ */
+
+.screen {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+}
+
+.boot-screen {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0, 60, 90, .18),
+            rgba(0, 0, 0, .96) 72%
+        );
+
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s var(--ease-out);
+
+}
+
+.boot-screen.exit {
+
+    opacity: 0;
+
+    transform:
+        scale(1.5)
+        rotateX(15deg);
+
+    pointer-events: none;
+
+}
+
+.boot-grid {
+
+    position: absolute;
+
+    inset: 0;
+
+    opacity: .13;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 234, 255, .15) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 234, 255, .15) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        80px 80px;
+
+    transform:
+        perspective(500px)
+        rotateX(60deg)
+        scale(2);
+
+    transform-origin:
+        bottom;
+
+    animation:
+        gridMove 8s linear infinite;
+
+}
+
+.boot-scan {
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--cyan),
+            transparent
+        );
+
+    box-shadow:
+        0 0 20px var(--cyan);
+
+    opacity: .4;
+
+    animation:
+        bootScan 5s linear infinite;
+
+}
+
+.boot-content {
+
+    width:
+        min(680px, 90%);
+
+    text-align: center;
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+.boot-label {
+
+    color: var(--muted);
+
+    font-family: var(--font-display);
+
+    font-size: 10px;
+
+    letter-spacing: 5px;
+
+    margin-top: 30px;
+
+}
+
+.boot-content h1 {
+
+    margin-top: 8px;
+
+    font-family: var(--font-display);
+
+    font-size:
+        clamp(55px, 12vw, 105px);
+
+    font-weight: 800;
+
+    letter-spacing: 20px;
+
+    color: white;
+
+    text-shadow:
+        0 0 8px white,
+        0 0 25px var(--cyan),
+        0 0 70px rgba(0, 234, 255, .5);
+
+    animation:
+        titlePulse 4s ease-in-out infinite;
+
+}
+
+.boot-title {
+
+    font-family: var(--font-display);
+
+    color: var(--cyan);
+
+    letter-spacing: 6px;
+
+    font-size: 12px;
+
+}
+
+.boot-terminal {
+
+    min-height: 28px;
+
+    margin-top: 45px;
+
+    color: #74dce8;
+
+    font-size: 14px;
+
+    letter-spacing: 1px;
+
+}
+
+.terminal-prefix {
+
+    color: var(--cyan);
+
+    margin-right: 7px;
+
+}
+
+.terminal-cursor {
+
+    color: var(--cyan);
+
+    animation:
+        blink .8s infinite;
+
+}
+
+.boot-progress {
+
+    width: 100%;
+
+    height: 3px;
+
+    margin:
+        12px auto 5px;
+
+    background:
+        rgba(0, 234, 255, .1);
+
+    overflow: hidden;
+
+}
+
+.boot-progress-fill {
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--cyan)
+        );
+
+    box-shadow:
+        0 0 10px var(--cyan),
+        0 0 30px var(--cyan);
+
+}
+
+.boot-percentage {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-family: var(--font-display);
+
+    font-size: 7px;
+
+    letter-spacing: 2px;
+
+    color: var(--muted);
+
+}
+
+.boot-percentage strong {
+
+    color: var(--cyan);
+
+}
+
+.boot-warning {
+
+    margin-top: 20px;
+
+    color:
+        rgba(255,255,255,.25);
+
+    font-family: var(--font-display);
+
+    font-size: 6px;
+
+    letter-spacing: 3px;
+
+}
+
+
+/* ============================================================
+   09. SYMBOL
+============================================================ */
+
+.aegis-symbol {
+
+    width: 145px;
+    height: 145px;
+
+    margin: auto;
+
+    position: relative;
+
+    display: grid;
+
+    place-items: center;
+
+}
+
+.symbol-ring {
+
+    position: absolute;
+
+    border:
+        1px solid var(--cyan);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 10px rgba(0, 234, 255, .35),
+        inset 0 0 10px rgba(0, 234, 255, .35);
+
+}
+
+.ring-1 {
+
+    inset: 5px;
+
+    animation:
+        rotate 10s linear infinite;
+
+}
+
+.ring-2 {
+
+    inset: 20px;
+
+    border-color: var(--violet);
+
+    animation:
+        rotateReverse 7s linear infinite;
+
+}
+
+.ring-3 {
+
+    inset: 36px;
+
+    border-color: white;
+
+    opacity: .4;
+
+    animation:
+        rotate 4s linear infinite;
+
+}
+
+.symbol-cross {
+
+    position: absolute;
+
+    background:
+        rgba(0, 234, 255, .3);
+
+}
+
+.symbol-cross.horizontal {
+
+    width: 100%;
+
+    height: 1px;
+
+}
+
+.symbol-cross.vertical {
+
+    width: 1px;
+
+    height: 100%;
+
+}
+
+.symbol-core {
+
+    width: 65px;
+    height: 65px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            white,
+            var(--cyan) 20%,
+            #00313b 65%,
+            transparent 70%
+        );
+
+    color: #001014;
+
+    font-family: var(--font-display);
+
+    font-size: 25px;
+
+    box-shadow:
+        0 0 15px var(--cyan),
+        0 0 60px rgba(0, 234, 255, .4);
+
+    animation:
+        corePulse 2s infinite;
+
+}
+
+
+/* ============================================================
+   10. MAIN INTERFACE
+============================================================ */
+
+#main-interface {
+
+    position: relative;
+
+    z-index: 15;
+
+    min-height: 100vh;
+
+    padding:
+        100px 35px 70px;
+
+    opacity: 1;
+
+    transition:
+        opacity 1s;
+
+}
+
+.hidden {
+    display: none !important;
+}
+
+.ship-interface {
+
+    width:
+        min(1500px, 100%);
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        190px
+        minmax(400px, 1fr)
+        190px;
+
+    gap: 25px;
+
+    perspective: 1800px;
+
+}
+
+
+/* ============================================================
+   11. PANELS
+============================================================ */
+
+.side-panel {
+
+    align-self: start;
+
+    padding: 20px;
+
+    border:
+        1px solid rgba(0, 234, 255, .18);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(4, 20, 32, .68),
+            rgba(1, 7, 14, .4)
+        );
+
+    backdrop-filter:
+        blur(12px);
+
+    box-shadow:
+        inset 0 0 30px
+        rgba(0, 234, 255, .025);
+
+    position: relative;
+
+}
+
+.side-panel::before {
+
+    content: '';
+
+    position: absolute;
+
+    top: -1px;
+    left: 15px;
+    right: 15px;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--cyan),
+            transparent
+        );
+
+    box-shadow:
+        0 0 10px var(--cyan);
+
+}
+
+.panel-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+.panel-index {
+
+    color:
+        rgba(0, 234, 255, .35);
+
+    font-family: var(--font-display);
+
+    font-size: 7px;
+
+}
+
+.panel-label {
+
+    font-family: var(--font-display);
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: var(--muted);
+
+}
+
+.panel-line {
+
+    width: 100%;
+
+    height: 1px;
+
+    margin-top: 15px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,234,255,.25),
+            transparent
+        );
+
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+.system-status {
+
+    margin-top: 20px;
+
+}
+
+.status-line {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 10px;
+
+    color: var(--muted);
+
+}
+
+.status-line strong {
+
+    color: var(--cyan);
+
+}
+
+.mini-bar {
+
+    height: 2px;
+
+    margin-top: 6px;
+
+    background:
+        rgba(255,255,255,.06);
+
+    overflow: hidden;
+
+}
+
+.mini-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--cyan)
+        );
+
+    box-shadow:
+        0 0 8px var(--cyan);
+
+    transition:
+        width .8s var(--ease-out);
+
+}
+
+.coordinates {
+
+    margin-top: 35px;
+
+    padding-top: 15px;
+
+    border-top:
+        1px solid rgba(255,255,255,.07);
+
+}
+
+.coordinates span,
+.coordinates small {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    letter-spacing: 1px;
+
+}
+
+.coordinates strong {
+
+    display: block;
+
+    margin: 5px 0;
+
+    color: var(--cyan);
+
+    font-size: 10px;
+
+}
+
+.mission-clock {
+
+    margin-top: 30px;
+
+    padding-top: 15px;
+
+    border-top:
+        1px solid rgba(255,255,255,.07);
+
+}
+
+.mission-clock span {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-family: var(--font-display);
+
+    font-size: 6px;
+
+    letter-spacing: 2px;
+
+}
+
+.mission-clock strong {
+
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--cyan);
+
+    font-family: var(--font-display);
+
+    font-size: 10px;
+
+}
+
+.left-decoration {
+
+    display: flex;
+
+    gap: 4px;
+
+    margin-top: 35px;
+
+}
+
+.left-decoration span {
+
+    width: 20px;
+    height: 2px;
+
+    background: var(--cyan);
+
+    opacity: .3;
+
+}
+
+.left-decoration span:nth-child(2) {
+    width: 8px;
+}
+
+.left-decoration span:nth-child(3) {
+    width: 30px;
+}
+
+
+/* ============================================================
+   12. CONSOLE
+============================================================ */
+
+.main-stage {
+
+    min-width: 0;
+
+}
+
+.top-console {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: end;
+
+    margin-bottom: 15px;
+
+}
+
+.console-label {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+}
+
+#node-indicator {
+
+    display: block;
+
+    margin-top: 4px;
+
+    font-family: var(--font-display);
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+
+    color: var(--cyan);
+
+}
+
+.progress-container {
+
+    width: 240px;
+
+}
+
+.progress-label {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: var(--muted);
+
+    font-family: var(--font-display);
+
+    font-size: 7px;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 5px;
+
+}
+
+#progress-percent {
+
+    color: var(--cyan);
+
+}
+
+.progress-track {
+
+    height: 3px;
+
+    background:
+        rgba(255,255,255,.06);
+
+    overflow: hidden;
+
+}
+
+.progress-fill {
+
+    width: 0;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--cyan)
+        );
+
+    box-shadow:
+        0 0 10px var(--cyan);
+
+    transition:
+        width 1s var(--ease-out);
+
+}
+
+
+/* ============================================================
+   13. QUEST SYSTEM
+============================================================ */
+
+.quest-strip {
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 55px;
+
+    margin-bottom: 15px;
+
+    padding:
+        8px 15px;
+
+    border:
+        1px solid rgba(141, 77, 255, .25);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(141, 77, 255, .08),
+            rgba(0, 234, 255, .03)
+        );
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+.quest-strip::before {
+
+    content: '';
+
+    position: absolute;
+
+    inset: 0;

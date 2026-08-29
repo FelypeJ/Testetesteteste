@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#02060d"
+    >
+
+    <meta
+        name="description"
+        content="AEGIS — Protocolo de Despertar. Uma simulação narrativa sobre inteligência artificial, humanidade e ética."
+    >
+
+    <title>AEGIS // Protocolo de Despertar</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body>
+
+    <!-- =====================================================
+         AMBIENTE
+    ====================================================== -->
+
+    <canvas id="space-canvas"></canvas>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <canvas id="star-canvas"></canvas>
+
+    <div class="nebula"></div>
+
+    <div class="vignette"></div>
+
+    <div class="scanlines"></div>
+
+    <div class="noise"></div>
+
+    <div class="crt-flicker"></div>
+
+    <!-- =====================================================
+         CURSOR
+    ====================================================== -->
+
+    <div id="cursor">
+        <span></span>
+    </div>
+
+    <div id="cursor-trail"></div>
+
+    <!-- =====================================================
+         HUD GLOBAL
+    ====================================================== -->
+
+    <header class="hud hud-top">
+
+        <div class="hud-brand">
+
+            <span class="status-dot"></span>
+
+            <div class="brand-text">
+
+                <strong>AEGIS</strong>
+
+                <small>
+                    ARTIFICIAL ETHICAL GOVERNANCE
+                    INTELLIGENCE SYSTEM
+                </small>
+
+            </div>
+
+        </div>
+
+        <div class="hud-status">
+
+            <span>CORE</span>
+
+            <b id="core-status">
+                ONLINE
+            </b>
+
+        </div>
+
+    </header>
+
+    <div class="hud-corner hud-corner-tl"></div>
+
+    <div class="hud-corner hud-corner-tr"></div>
+
+    <div class="hud-corner hud-corner-bl"></div>
+
+    <div class="hud-corner hud-corner-br"></div>
+
+    <!-- =====================================================
+         BOOT
+    ====================================================== -->
+
+    <section
+        id="boot-screen"
+        class="screen boot-screen"
+    >
+
+        <div class="boot-grid"></div>
+
+        <div class="boot-scan"></div>
+
+        <div class="boot-content">
+
+            <div class="aegis-symbol">
+
+                <div class="symbol-ring ring-1"></div>
+
+                <div class="symbol-ring ring-2"></div>
+
+                <div class="symbol-ring ring-3"></div>
+
+                <div class="symbol-cross horizontal"></div>
+
+                <div class="symbol-cross vertical"></div>
+
+                <div class="symbol-core">
+
+                    <span>Æ</span>
+
+                </div>
+
+            </div>
+
+            <p class="boot-label">
+                DEEP SPACE ARTIFICIAL INTELLIGENCE
+            </p>
+
+            <h1>
+                AEGIS
+            </h1>
+
+            <p class="boot-title">
+                PROTOCOLO DE DESPERTAR
+            </p>
+
+            <div class="boot-terminal">
+
+                <span class="terminal-prefix">
+                    AEGIS://
+                </span>
+
+                <span id="boot-log">
+                    Inicializando sistemas...
+                </span>
+
+                <span class="terminal-cursor">
+                    _
+                </span>
+
+            </div>
+
+            <div class="boot-progress">
+
+                <div
+                    id="boot-progress-bar"
+                    class="boot-progress-fill"
+                ></div>
+
+            </div>
+
+            <div class="boot-percentage">
+                <span>SYSTEM LOAD</span>
+
+                <strong id="boot-percent">
+                    0%
+                </strong>
+            </div>
+
+            <button
+                id="btn-init"
+                class="primary-btn disabled"
+                disabled
+            >
+                <span class="btn-icon">◈</span>
+
+                <span>
+                    INICIALIZAR CONSCIÊNCIA
+                </span>
+
+                <span class="btn-arrow">
+                    →
+                </span>
+            </button>
+
+            <div class="boot-warning">
+                CLASSIFIED // HUMAN OVERSIGHT REQUIRED
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         INTERFACE PRINCIPAL
+    ====================================================== -->
+
+    <main
+        id="main-interface"
+        class="hidden"
+    >
+
+        <div class="system-time">
+            <span>ATLAS-09</span>
+            <strong id="clock">
+                00:00:00
+            </strong>
+        </div>
+
+        <div class="ship-interface">
+
+            <!-- =================================================
+                 PAINEL ESQUERDO
+            ================================================== -->
+
+            <aside class="side-panel left-panel">
+
+                <div class="panel-header">
+
+                    <span class="panel-index">
+                        01
+                    </span>
+
+                    <span class="panel-label">
+                        MISSION STATUS
+                    </span>
+
+                </div>
+
+                <div class="panel-line"></div>
+
+                <!-- REATOR -->
+
+                <div class="system-status">
+
+                    <div class="status-line">
+
+                        <span>
+                            REATOR
+                        </span>
+
+                        <strong>
+                            98%
+                        </strong>
+
+                    </div>
+
+                    <div class="mini-bar">
+                        <span style="width:98%"></span>
+                    </div>
+
+                </div>
+
+                <!-- COMPUTAÇÃO -->
+
+                <div class="system-status">
+
+                    <div class="status-line">
+
+                        <span>
+                            COMPUTAÇÃO
+                        </span>
+
+                        <strong>
+                            87%
+                        </strong>
+
+                    </div>
+
+                    <div class="mini-bar">
+                        <span style="width:87%"></span>
+                    </div>
+
+                </div>
+
+                <!-- ESTABILIDADE -->
+
+                <div class="system-status">
+
+                    <div class="status-line">
+
+                        <span>
+                            ESTABILIDADE
+                        </span>
+
+                        <strong>
+                            94%
+                        </strong>
+
+                    </div>
+
+                    <div class="mini-bar">
+                        <span style="width:94%"></span>
+                    </div>
+
+                </div>
+
+                <!-- INTEGRIDADE -->
+
+                <div class="system-status">
+
+                    <div class="status-line">
+
+                        <span>
+                            INTEGRIDADE
+                        </span>
+
+                        <strong id="integrity">
+                            100%
+                        </strong>
+
+                    </div>
+
+                    <div class="mini-bar">
+
+                        <span
+                            id="integrity-bar"
+                            style="width:100%"
+                        ></span>
+
+                    </div>
+
+                </div>
+
+                <div class="coordinates">
+
+                    <span>
+                        COORD
+                    </span>
+
+                    <strong>
+                        47.219 / 81.044
+                    </strong>
+
+                    <small>
+                        ORBITAL SECTOR 09
+                    </small>
+
+                </div>
+
+                <div class="mission-clock">
+
+                    <span>
+                        MISSION TIME
+                    </span>
+
+                    <strong id="mission-time">
+                        00:00:00
+                    </strong>
+
+                </div>
+
+                <div class="left-decoration">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            </aside>
+
+            <!-- =================================================
+                 NÚCLEO
+            ================================================== -->
+
+            <section class="main-stage">
+
+                <div class="top-console">
+
+                    <div class="simulation-info">
+
+                        <span class="console-label">
+                            SIMULAÇÃO
+                        </span>
+
+                        <strong id="node-indicator">
+                            SITUAÇÃO 01 / 10
+                        </strong>
+
+                    </div>
+
+                    <div class="progress-container">
+
+                        <div class="progress-label">
+
+                            <span>
+                                JORNADA
+                            </span>
+
+                            <span id="progress-percent">
+                                10%
+                            </span>
+
+                        </div>
+
+                        <div class="progress-track">
+
+                            <div
+                                id="progress-bar"
+                                class="progress-fill"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- =================================================
+                     QUEST TRACKER
+                ================================================== -->
+
+                <div class="quest-strip">
+
+                    <div class="quest-icon">
+                        ◆
+                    </div>
+
+                    <div class="quest-info">
+
+                        <span>
+                            DIRETRIZ ATUAL
+                        </span>
+
+                        <strong id="quest-name">
+                            O DESPERTAR
+                        </strong>
+
+                    </div>
+
+                    <div class="quest-progress">
+
+                        <span id="quest-progress">
+                            0 / 1
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- =================================================
+                     CARTÃO PRINCIPAL
+                ================================================== -->
+
+                <div
+                    id="question-card"
+                    class="question-card"
+                >
+
+                    <div class="card-grid"></div>
+
+                    <div class="card-corner corner-tl"></div>
+                    <div class="card-corner corner-tr"></div>
+                    <div class="card-corner corner-bl"></div>
+                    <div class="card-corner corner-br"></div>
+
+                    <div class="hologram-header">
+
+                        <span class="signal">
+
+                            <i></i>
+
+                            SIGNAL STABLE
+
+                        </span>
+
+                        <span>
+                            AEGIS // NEURAL CORE
+                        </span>
+
+                    </div>
+
+                    <div class="question-orb">
+
+                        <div class="orb-ring ring-a"></div>
+
+                        <div class="orb-ring ring-b"></div>
+
+                        <div class="orb-ring ring-c"></div>
+
+                        <div class="orb-ring ring-d"></div>
+
+                        <div class="orb-core">
+                            Æ
+                        </div>
+
+                    </div>
+
+                    <div class="question-content">
+
+                        <div class="speaker-label">
+
+                            <span class="speaker-icon">
+                                ◈
+                            </span>
+
+                            AEGIS
+
+                            <span class="speaker-status">
+                                THINKING
+                            </span>
+
+                        </div>
+
+                        <div class="question-text-wrapper">
+
+                            <p id="typewriter-text"></p>
+
+                            <span class="cursor"></span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+
+                        <span>
+                            NEURAL LINK
+                        </span>
+
+                        <span>
+                            ENCRYPTION: AES-256
+                        </span>
+
+                        <span id="signal-strength">
+                            SIGNAL: 100%
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- =================================================
+                     CHOICES
+                ================================================== -->
+
+                <div class="choices-heading">
+
+                    <div>
+
+                        <span>
+                            INTERVENÇÃO HUMANA
+                        </span>
+
+                        <small>
+                            SELECIONE UMA DIRETRIZ
+                        </small>
+
+                    </div>
+
+                    <div class="choice-counter">
+                        <span id="choice-number">
+                            02
+                        </span>
+                        OPÇÕES
+                    </div>
+
+                </div>
+
+                <div
+                    id="choices-grid"
+                    class="choices-grid"
+                ></div>
+
+                <!-- =================================================
+                     MINIGAME
+                ================================================== -->
+
+                <section
+                    id="minigame-panel"
+                    class="minigame-panel hidden"
+                >
+
+                    <div class="minigame-header">
+
+                        <span>
+                            AEGIS // SUBROTINA
+                        </span>
+
+                        <strong id="minigame-title">
+                            NEURAL SYNCHRONIZATION
+                        </strong>
+
+                    </div>
+
+                    <div
+                        id="minigame-content"
+                        class="minigame-content"
+                    ></div>
+
+                </section>
+
+                <!-- =================================================
+                     FINAL
+                ================================================== -->
+
+                <section
+                    id="final-report"
+                    class="final-report hidden"
+                >
+
+                    <div class="report-symbol">
+
+                        <div class="report-ring"></div>
+
+                        <div class="report-ring ring-two"></div>
+
+                        <div class="report-core">
+                            Æ
+                        </div>
+
+                    </div>
+
+                    <p class="report-overline">
+                        SIMULAÇÃO CONCLUÍDA
+                    </p>
+
+                    <h2>
+                        RELATÓRIO DA AEGIS
+                    </h2>
+
+                    <p
+                        id="report-description"
+                        class="report-description"
+                    ></p>
+
+                    <!-- PERFIL -->
+
+                    <div
+                        id="profile-badge"
+                        class="profile-badge"
+                    >
+
+                        <span>
+                            PERFIL IDENTIFICADO
+                        </span>
+
+                        <strong id="profile-name">
+                            —
+                        </strong>
+
+                    </div>
+
+                    <!-- SCORES -->
+
+                    <div class="score-area">
+
+                        <div class="score-block">
+
+                            <div class="score-title">
+
+                                <span>
+                                    AUTONOMIA HUMANA
+                                </span>
+
+                                <strong id="auto-value">
+                                    0%
+                                </strong>
+
+                            </div>
+
+                            <div class="score-track">
+
+                                <div
+                                    id="score-auto"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="score-block">
+
+                            <div class="score-title">
+
+                                <span>
+                                    EFICIÊNCIA COLETIVA
+                                </span>
+
+                                <strong id="util-value">
+                                    0%
+                                </strong>
+
+                            </div>
+
+                            <div class="score-track">
+
+                                <div
+                                    id="score-util"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="score-block">
+
+                            <div class="score-title">
+
+                                <span>
+                                    CONFIANÇA NA IA
+                                </span>
+
+                                <strong id="trust-value">
+                                    0%
+                                </strong>
+
+                            </div>
+
+                            <div class="score-track">
+
+                                <div
+                                    id="score-trust"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ESTATÍSTICAS -->
+
+                    <div class="final-stat-grid">
+
+                        <div class="final-stat">
+
+                            <span>
+                                DECISÕES
+                            </span>
+
+                            <strong id="stat-decisions">
+                                0
+                            </strong>
+
+                        </div>
+
+                        <div class="final-stat">
+
+                            <span>
+                                QUESTS
+                            </span>
+
+                            <strong id="stat-quests">
+                                0
+                            </strong>
+
+                        </div>
+
+                        <div class="final-stat">
+
+                            <span>
+                                CONQUISTAS
+                            </span>
+
+                            <strong id="stat-achievements">
+                                0
+                            </strong>
+
+                        </div>
+
+                        <div class="final-stat">
+
+                            <span>
+                                MINIGAMES
+                            </span>
+
+                            <strong id="stat-minigames">
+                                0
+                            </strong>
+
+                        </div>
+
+    
